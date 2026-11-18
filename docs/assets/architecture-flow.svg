@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 250" width="100%" height="100%">
+  <defs>
+    <linearGradient id="archBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#172033" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1100" height="250" rx="18" fill="url(#archBg)" stroke="rgba(99, 102, 241, 0.28)" stroke-width="1.5" />
+
+  <text x="550" y="32" text-anchor="middle" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="800" fill="#38bdf8" letter-spacing="1.2">
+    FULL-STACK MULTI-LAYER PERSISTENCE, REDIS CACHING &amp; QA TELEMETRY ARCHITECTURE
+  </text>
+
+  <!-- React Frontend Box -->
+  <g transform="translate(45, 75)">
+    <rect width="225" height="120" rx="14" fill="rgba(56, 189, 248, 0.12)" stroke="#38bdf8" stroke-width="2" />
+    <text x="112" y="34" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#bae6fd">⚛️ React 19 KDS &amp; POS</text>
+    <text x="112" y="58" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#cbd5e1">• 56+ Dish Visual Gallery</text>
+    <text x="112" y="78" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#cbd5e1">• 4-Stage Status Kanban</text>
+    <text x="112" y="98" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#38bdf8">• Live QA Inspector Drawer</text>
+  </g>
+
+  <!-- Express API Gateway Box -->
+  <g transform="translate(385, 75)">
+    <rect width="245" height="120" rx="14" fill="rgba(99, 102, 241, 0.14)" stroke="#818cf8" stroke-width="2" />
+    <text x="122" y="34" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#c7d2fe">🚀 Node.js &amp; Express 5</text>
+    <text x="122" y="58" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#cbd5e1">• Input Validation Guard</text>
+    <text x="122" y="78" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#cbd5e1">• FSM Transition Engine</text>
+    <text x="122" y="98" text-anchor="middle" font-family="Consolas, monospace" font-size="11.5" fill="#a5b4fc">• X-Response-Time Header</text>
+  </g>
+
+  <!-- Animated Link Frontend <-> Express -->
+  <line x1="270" y1="135" x2="385" y2="135" stroke="#64748b" stroke-width="3" stroke-dasharray="6 5" />
+  <circle cx="270" cy="135" r="5.5" fill="#38bdf8">
+    <animate attributeName="cx" values="270;385;270" dur="2.2s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Three Backend Data Layer Boxes (PostgreSQL, Redis, MongoDB) -->
+  <!-- 1. Redis Cache -->
+  <g transform="translate(765, 46)">
+    <rect width="290" height="54" rx="10" fill="rgba(244, 63, 94, 0.14)" stroke="#fb7185" stroke-width="1.8" />
+    <text x="145" y="24" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="800" fill="#fecdd3">⚡ Redis TTL Cache (60s)</text>
+    <text x="145" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#fda4af">X-Cache: HIT | MISS | INVALIDATED</text>
+  </g>
+
+  <!-- 2. PostgreSQL Primary DB -->
+  <g transform="translate(765, 110)">
+    <rect width="290" height="54" rx="10" fill="rgba(16, 185, 129, 0.14)" stroke="#34d399" stroke-width="1.8" />
+    <text x="145" y="24" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="800" fill="#a7f3d0">🐘 PostgreSQL 15 + Disk Store</text>
+    <text x="145" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#6ee7b7">ACID Orders Table + Auto-Migration</text>
+  </g>
+
+  <!-- 3. MongoDB Audit Trail -->
+  <g transform="translate(765, 174)">
+    <rect width="290" height="54" rx="10" fill="rgba(245, 158, 11, 0.14)" stroke="#fbbf24" stroke-width="1.8" />
+    <text x="145" y="24" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13.5" font-weight="800" fill="#fde68a">🍃 MongoDB 7 Audit Store</text>
+    <text x="145" y="42" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#fcd34d">Immutable State Transition Logs</text>
+  </g>
+
+  <!-- Animated Links Express -> Redis / Postgres / Mongo -->
+  <line x1="630" y1="110" x2="765" y2="73" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5 5" />
+  <circle cx="630" cy="110" r="4.5" fill="#fb7185">
+    <animate attributeName="cx" values="630;765" dur="1.4s" repeatCount="indefinite" />
+    <animate attributeName="cy" values="110;73" dur="1.4s" repeatCount="indefinite" />
+  </circle>
+
+  <line x1="630" y1="137" x2="765" y2="137" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5 5" />
+  <circle cx="630" cy="137" r="4.5" fill="#34d399">
+    <animate attributeName="cx" values="630;765" dur="1.6s" begin="0.4s" repeatCount="indefinite" />
+  </circle>
+
+  <line x1="630" y1="164" x2="765" y2="201" stroke="#64748b" stroke-width="2.5" stroke-dasharray="5 5" />
+  <circle cx="630" cy="164" r="4.5" fill="#fbbf24">
+    <animate attributeName="cx" values="630;765" dur="1.8s" begin="0.8s" repeatCount="indefinite" />
+    <animate attributeName="cy" values="164;201" dur="1.8s" begin="0.8s" repeatCount="indefinite" />
+  </circle>
+</svg>

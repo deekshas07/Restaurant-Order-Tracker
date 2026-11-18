@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 230" width="100%" height="100%">
+  <defs>
+    <linearGradient id="fsmBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1100" height="230" rx="18" fill="url(#fsmBg)" stroke="rgba(129, 140, 248, 0.25)" stroke-width="1.5" />
+
+  <text x="550" y="34" text-anchor="middle" font-family="Segoe UI, Inter, sans-serif" font-size="14" font-weight="800" fill="#a5b4fc" letter-spacing="1.2">
+    ANIMATED FINITE STATE MACHINE (FSM) ORDER LIFECYCLE PIPELINE
+  </text>
+
+  <!-- Animated Connecting Tracks -->
+  <line x1="210" y1="105" x2="330" y2="105" stroke="#475569" stroke-width="4" stroke-dasharray="8 6" />
+  <line x1="490" y1="105" x2="610" y2="105" stroke="#475569" stroke-width="4" stroke-dasharray="8 6" />
+  <line x1="770" y1="105" x2="890" y2="105" stroke="#475569" stroke-width="4" stroke-dasharray="8 6" />
+
+  <!-- Glowing Animated Particles Flowing Along Track 1 (Pending -> Preparing) -->
+  <circle cx="210" cy="105" r="6" fill="#fbbf24" filter="url(#glow)">
+    <animate attributeName="cx" values="210;330" dur="1.8s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Glowing Animated Particles Flowing Along Track 2 (Preparing -> Ready) -->
+  <circle cx="490" cy="105" r="6" fill="#60a5fa" filter="url(#glow)">
+    <animate attributeName="cx" values="490;610" dur="1.8s" begin="0.6s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Glowing Animated Particles Flowing Along Track 3 (Ready -> Completed) -->
+  <circle cx="770" cy="105" r="6" fill="#34d399" filter="url(#glow)">
+    <animate attributeName="cx" values="770;890" dur="1.8s" begin="1.2s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Stage 1: Pending -->
+  <g transform="translate(50, 62)">
+    <rect width="160" height="86" rx="14" fill="rgba(245, 158, 11, 0.14)" stroke="#f59e0b" stroke-width="2" />
+    <circle cx="24" cy="24" r="5" fill="#f59e0b">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite" />
+    </circle>
+    <text x="80" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#fde68a">1. PENDING</text>
+    <text x="80" y="52" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#cbd5e1">POST /api/orders</text>
+    <text x="80" y="72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="700" fill="#fbbf24">HTTP 201 Created</text>
+  </g>
+
+  <!-- Stage 2: Preparing -->
+  <g transform="translate(330, 62)">
+    <rect width="160" height="86" rx="14" fill="rgba(59, 130, 246, 0.14)" stroke="#3b82f6" stroke-width="2" />
+    <circle cx="24" cy="24" r="5" fill="#3b82f6">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" begin="0.5s" repeatCount="indefinite" />
+    </circle>
+    <text x="84" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#bfdbfe">2. PREPARING</text>
+    <text x="80" y="52" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#cbd5e1">PUT /api/orders/:id</text>
+    <text x="80" y="72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="700" fill="#60a5fa">Kitchen Line Active</text>
+  </g>
+
+  <!-- Stage 3: Ready -->
+  <g transform="translate(610, 62)">
+    <rect width="160" height="86" rx="14" fill="rgba(16, 185, 129, 0.14)" stroke="#10b981" stroke-width="2" />
+    <circle cx="24" cy="24" r="5" fill="#10b981">
+      <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" begin="1s" repeatCount="indefinite" />
+    </circle>
+    <text x="80" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#a7f3d0">3. READY</text>
+    <text x="80" y="52" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#cbd5e1">PUT /api/orders/:id</text>
+    <text x="80" y="72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="700" fill="#34d399">At Pass Counter</text>
+  </g>
+
+  <!-- Stage 4: Completed -->
+  <g transform="translate(890, 62)">
+    <rect width="160" height="86" rx="14" fill="rgba(34, 197, 94, 0.16)" stroke="#22c55e" stroke-width="2" />
+    <text x="80" y="30" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#bbf7d0">4. COMPLETED</text>
+    <text x="80" y="52" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#cbd5e1">Terminal Stage ✓</text>
+    <text x="80" y="72" text-anchor="middle" font-family="Consolas, monospace" font-size="11" font-weight="700" fill="#4ade80">Locked (400 Guard)</text>
+  </g>
+
+  <!-- Bottom Cancellation & QA Protection Bar -->
+  <g transform="translate(180, 174)">
+    <rect width="740" height="36" rx="10" fill="rgba(244, 63, 94, 0.12)" stroke="rgba(244, 63, 94, 0.4)" stroke-width="1.2" />
+    <text x="370" y="23" text-anchor="middle" font-family="Consolas, monospace" font-size="12" font-weight="700" fill="#fda4af">
+      🛡️ QA FSM GUARD: Illegal backward/skip jumps (e.g. Completed ➔ Preparing) return HTTP 400 Bad Request
+    </text>
+  </g>
+</svg>

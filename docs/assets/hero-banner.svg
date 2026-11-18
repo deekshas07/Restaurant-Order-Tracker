@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19">
+        <animate attributeName="stop-color" values="#0b0f19;#1e1b4b;#0b0f19" dur="8s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="50%" stop-color="#1e1b4b">
+        <animate attributeName="stop-color" values="#1e1b4b;#0f172a;#31102f;#1e1b4b" dur="8s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="100%" stop-color="#31102f">
+        <animate attributeName="stop-color" values="#31102f;#1e1b4b;#31102f" dur="8s" repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="45%" stop-color="#fed7aa" />
+      <stop offset="100%" stop-color="#a5b4fc" />
+    </linearGradient>
+
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f97316" />
+      <stop offset="50%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+
+    <radialGradient id="orbOrange" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f97316" stop-opacity="0.38" />
+      <stop offset="100%" stop-color="#f97316" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="orbIndigo" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6366f1" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0" />
+    </radialGradient>
+
+    <radialGradient id="orbEmerald" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0.32" />
+      <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Main Rounded Card Background -->
+  <rect width="1200" height="340" rx="22" fill="url(#bgGrad)" />
+
+  <!-- Animated Floating Ambient Orbs -->
+  <circle cx="180" cy="90" r="170" fill="url(#orbOrange)">
+    <animate attributeName="cx" values="180;280;180" dur="7s" repeatCount="indefinite" />
+    <animate attributeName="cy" values="90;150;90" dur="7s" repeatCount="indefinite" />
+  </circle>
+
+  <circle cx="1020" cy="240" r="200" fill="url(#orbIndigo)">
+    <animate attributeName="cx" values="1020;900;1020" dur="9s" repeatCount="indefinite" />
+    <animate attributeName="cy" values="240;110;240" dur="9s" repeatCount="indefinite" />
+  </circle>
+
+  <circle cx="620" cy="170" r="160" fill="url(#orbEmerald)">
+    <animate attributeName="r" values="140;190;140" dur="6s" repeatCount="indefinite" />
+  </circle>
+
+  <!-- Subtle Grid Lines -->
+  <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+    <line x1="0" y1="85" x2="1200" y2="85" />
+    <line x1="0" y1="170" x2="1200" y2="170" />
+    <line x1="0" y1="255" x2="1200" y2="255" />
+    <line x1="300" y1="0" x2="300" y2="340" />
+    <line x1="600" y1="0" x2="600" y2="340" />
+    <line x1="900" y1="0" x2="900" y2="340" />
+  </g>
+
+  <!-- Top Animated Gradient Accent Bar -->
+  <rect x="0" y="0" width="1200" height="6" rx="3" fill="url(#accentGrad)" />
+
+  <!-- Live Telemetry Status Pill -->
+  <g transform="translate(460, 28)">
+    <rect width="280" height="32" rx="16" fill="rgba(15, 23, 42, 0.78)" stroke="rgba(52, 211, 153, 0.45)" stroke-width="1.5" />
+    <circle cx="22" cy="16" r="5" fill="#10b981">
+      <animate attributeName="r" values="4;7;4" dur="1.6s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="1;0.4;1" dur="1.6s" repeatCount="indefinite" />
+    </circle>
+    <text x="38" y="21" font-family="Segoe UI, Inter, sans-serif" font-size="12.5" font-weight="700" fill="#34d399" letter-spacing="0.8">
+      QA ENTERPRISE EDITION • v2.5 LIVE
+    </text>
+  </g>
+
+  <!-- Main Title -->
+  <text x="600" y="116" text-anchor="middle" font-family="Segoe UI, Inter, sans-serif" font-size="42" font-weight="800" fill="url(#titleGrad)" letter-spacing="-0.5">
+    GourmetFlow — Restaurant Order Tracker
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="152" text-anchor="middle" font-family="Segoe UI, Inter, sans-serif" font-size="17" font-weight="500" fill="#cbd5e1">
+    56+ Visual Dishes (INR ₹) • 4-Stage Status Kanban • Redis Caching • Full-Stack QA Automation Suite
+  </text>
+
+  <!-- Animated Dish Category Showcase Pills -->
+  <g transform="translate(115, 182)">
+    <!-- Pill 1: Breakfast -->
+    <g transform="translate(0, 0)">
+      <rect width="145" height="36" rx="10" fill="rgba(245, 158, 11, 0.16)" stroke="#f59e0b" stroke-width="1.2" />
+      <text x="72" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#fde68a">☀️ Breakfast (8)</text>
+    </g>
+    <!-- Pill 2: Lunch -->
+    <g transform="translate(158, 0)">
+      <rect width="160" height="36" rx="10" fill="rgba(99, 102, 241, 0.18)" stroke="#818cf8" stroke-width="1.2" />
+      <text x="80" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#c7d2fe">🍛 Lunch &amp; Thalis (10)</text>
+    </g>
+    <!-- Pill 3: Dinner -->
+    <g transform="translate(331, 0)">
+      <rect width="160" height="36" rx="10" fill="rgba(236, 72, 153, 0.18)" stroke="#f472b6" stroke-width="1.2" />
+      <text x="80" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#fbcfe8">🌙 Dinner &amp; Grill (10)</text>
+    </g>
+    <!-- Pill 4: Starters -->
+    <g transform="translate(504, 0)">
+      <rect width="140" height="36" rx="10" fill="rgba(249, 115, 22, 0.18)" stroke="#fb923c" stroke-width="1.2" />
+      <text x="70" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#fed7aa">🥟 Starters (8)</text>
+    </g>
+    <!-- Pill 5: Juices -->
+    <g transform="translate(657, 0)">
+      <rect width="145" height="36" rx="10" fill="rgba(16, 185, 129, 0.18)" stroke="#34d399" stroke-width="1.2" />
+      <text x="72" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#a7f3d0">🍹 Fresh Juices (7)</text>
+    </g>
+    <!-- Pill 6: Milkshakes & Desserts -->
+    <g transform="translate(815, 0)">
+      <rect width="165" height="36" rx="10" fill="rgba(168, 85, 247, 0.18)" stroke="#c084fc" stroke-width="1.2" />
+      <text x="82" y="23" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#e9d5ff">🥤 Shakes &amp; Sweets (13)</text>
+    </g>
+  </g>
+
+  <!-- Bottom Live QA Telemetry Metrics Bar -->
+  <g transform="translate(150, 250)">
+    <rect width="900" height="58" rx="14" fill="rgba(15, 23, 42, 0.82)" stroke="rgba(148, 163, 184, 0.22)" stroke-width="1.2" />
+
+    <!-- Metric 1 -->
+    <text x="115" y="25" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#94a3b8">QA API ASSERTIONS</text>
+    <text x="115" y="45" text-anchor="middle" font-family="Consolas, monospace" font-size="16" font-weight="800" fill="#34d399">✓ 18 / 18 PASSED</text>
+
+    <line x1="230" y1="12" x2="230" y2="46" stroke="rgba(148,163,184,0.2)" />
+
+    <!-- Metric 2 -->
+    <text x="345" y="25" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#94a3b8">REDIS CACHE LATENCY</text>
+    <text x="345" y="45" text-anchor="middle" font-family="Consolas, monospace" font-size="16" font-weight="800" fill="#38bdf8">⚡ 1.7ms (X-Cache: HIT)</text>
+
+    <line x1="465" y1="12" x2="465" y2="46" stroke="rgba(148,163,184,0.2)" />
+
+    <!-- Metric 3 -->
+    <text x="580" y="25" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#94a3b8">CURRENCY &amp; MENU</text>
+    <text x="580" y="45" text-anchor="middle" font-family="Consolas, monospace" font-size="16" font-weight="800" fill="#fbbf24">₹ INR • 56+ DISHES</text>
+
+    <line x1="695" y1="12" x2="695" y2="46" stroke="rgba(148,163,184,0.2)" />
+
+    <!-- Metric 4 -->
+    <text x="795" y="25" text-anchor="middle" font-family="Consolas, monospace" font-size="11" fill="#94a3b8">PERSISTENCE ENGINE</text>
+    <text x="795" y="45" text-anchor="middle" font-family="Consolas, monospace" font-size="16" font-weight="800" fill="#c084fc">PG + MONGO + REDIS</text>
+  </g>
+</svg>

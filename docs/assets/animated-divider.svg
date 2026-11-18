@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 18" width="100%" height="18">
+  <defs>
+    <linearGradient id="divGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.15" />
+      <stop offset="50%" stop-color="#ec4899" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.15" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="7" width="1200" height="4" rx="2" fill="url(#divGrad)" />
+  <circle cx="0" cy="9" r="6" fill="#38bdf8">
+    <animate attributeName="cx" values="40;1160;40" dur="5s" repeatCount="indefinite" />
+  </circle>
+</svg>

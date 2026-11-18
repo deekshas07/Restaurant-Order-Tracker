@@ -1,0 +1,529 @@
+{
+  "info": {
+    "_postman_id": "8f3c5c94-4d2e-4f1a-9b81-2a7e1c4d9012",
+    "name": "Restaurant Order Tracker - QA Automation & API Test Suite",
+    "description": "Complete Postman Collection for demonstrating CRUD operations, strict input validation, finite state machine transitions (Pending -> Preparing -> Ready -> Completed / Cancelled), Redis cache HIT/MISS verification, and negative QA test cases.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "createdOrderId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. System Health, Seeding & Cache Diagnostics",
+      "item": [
+        {
+          "name": "GET Health & DB/Redis/Mongo Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response time is under 500ms', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(500);",
+                  "});",
+                  "pm.test('Contains PostgreSQL, MongoDB, and Redis diagnostics', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('healthy');",
+                  "    pm.expect(json.connections).to.have.property('postgresql');",
+                  "    pm.expect(json.connections).to.have.property('mongodb');",
+                  "    pm.expect(json.connections).to.have.property('redis');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        },
+        {
+          "name": "POST Seed Demo Orders (Reset Dataset)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Cache is invalidated on seed', function () {",
+                  "    pm.expect(pm.response.headers.get('X-Cache')).to.eql('INVALIDATED');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/seed",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "seed"]
+            }
+          }
+        },
+        {
+          "name": "POST Flush Redis Cache",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('X-Cache header indicates INVALIDATED', function () {",
+                  "    pm.expect(pm.response.headers.get('X-Cache')).to.eql('INVALIDATED');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/qa/cache/flush",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qa", "cache", "flush"]
+            }
+          }
+        },
+        {
+          "name": "GET MongoDB Audit Logs",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Returns array of audit logs', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.logs).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/qa/audit-logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "qa", "audit-logs"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Positive CRUD & Status Lifecycle Flow",
+      "item": [
+        {
+          "name": "GET All Orders (Check Redis Cache MISS / HIT)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Returns order list array', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.be.an('array');",
+                  "    pm.expect(json.length).to.be.above(0);",
+                  "});",
+                  "pm.test('Includes X-Cache and X-Response-Time headers', function () {",
+                  "    pm.expect(pm.response.headers.get('X-Cache')).to.be.oneOf(['HIT', 'MISS']);",
+                  "    pm.expect(pm.response.headers.has('X-Response-Time')).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "POST Create New Order (201 Created)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('New order starts in Pending status', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('Pending');",
+                  "    pm.expect(json.customer_name).to.eql('Aditi Kulkarni');",
+                  "    pm.collectionVariables.set('createdOrderId', String(json.id));",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"Aditi Kulkarni\",\n  \"food_item\": \"Artisan Burrata & Pesto Flatbread\",\n  \"quantity\": 2,\n  \"table_number\": \"T-08\",\n  \"priority\": \"High\",\n  \"price\": 19.50,\n  \"notes\": \"Extra basil pesto on the side\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "GET Single Order By ID (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{createdOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{createdOrderId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Transition 1: Pending -> Preparing (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Order status updated to Preparing', function () {",
+                  "    pm.expect(pm.response.json().status).to.eql('Preparing');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Preparing\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{createdOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{createdOrderId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Transition 2: Preparing -> Ready (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Order status updated to Ready', function () {",
+                  "    pm.expect(pm.response.json().status).to.eql('Ready');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Ready\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{createdOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{createdOrderId}}"]
+            }
+          }
+        },
+        {
+          "name": "PUT Transition 3: Ready -> Completed (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Order status updated to Completed', function () {",
+                  "    pm.expect(pm.response.json().status).to.eql('Completed');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Completed\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{createdOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{createdOrderId}}"]
+            }
+          }
+        },
+        {
+          "name": "DELETE Order By ID (200 OK)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/{{createdOrderId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "{{createdOrderId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Negative QA & Boundary Validation Tests",
+      "item": [
+        {
+          "name": "[Negative] POST Empty Customer & Invalid Quantity (400 Bad Request)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Error payload contains descriptive validation details', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.error).to.eql('Bad Request');",
+                  "    pm.expect(json.details).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"\",\n  \"food_item\": \"Burger\",\n  \"quantity\": -2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"]
+            }
+          }
+        },
+        {
+          "name": "[Negative] PUT Invalid Status Transition Completed -> Preparing (400 Bad Request)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Returns descriptive state transition error message', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.message).to.include('Invalid status transition');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Preparing\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/7",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "7"]
+            }
+          }
+        },
+        {
+          "name": "[Negative] GET Malformed Non-Numeric ID (400 Bad Request)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/abc-invalid",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "abc-invalid"]
+            }
+          }
+        },
+        {
+          "name": "[Negative] PUT Non-Existent Order ID (404 Not Found)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Ready\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders/999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders", "999999"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
+
